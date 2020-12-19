@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "440916766573",
+    "firebase_url": "https://myfirstproject-60e4c.firebaseio.com",
+    "project_id": "myfirstproject-60e4c",
+    "storage_bucket": "myfirstproject-60e4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440916766573:android:bc7e5d667f120b510db464",
+        "android_client_info": {
+          "package_name": "abika.sinau.myfirstfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440916766573-n8on1g0erll6l51rq8e7hhaknht0a0e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZJ6F9sgl88fc9IKRhkF2rIGbSBm8GUzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440916766573-n8on1g0erll6l51rq8e7hhaknht0a0e1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
