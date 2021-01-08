@@ -54,7 +54,10 @@ class MainActivity : AppCompatActivity() {
                     val hp = datas.child("hp").value.toString()
                     val alamat = datas.child("alamat").value.toString()
 
-                    val user = User(nama, pekerjaan, hp, alamat)
+                    // get key
+                    val key = datas.key
+
+                    val user = User(nama, pekerjaan, hp, alamat, key)
 
                     dataUser.add(user)
                     showDataUser(dataUser)
@@ -66,6 +69,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getDataUsers()
     }
 
     private fun showDataUser(dataUser: java.util.ArrayList<User>) {
