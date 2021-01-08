@@ -66,4 +66,7 @@ dependencies {
     // TODO 10: Tambahkan dependency baru untuk menggunakan login by email
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // Realtime database
+    implementation 'com.google.firebase:firebase-database-ktx'
 }
