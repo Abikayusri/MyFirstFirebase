@@ -38,8 +38,11 @@ class TambahUserActivity : AppCompatActivity() {
             // pengecekan kosong apa gak
             val myRef = db?.getReference("Users")
 
-            // insert ke database
-            myRef?.setValue(user)
+            // get key
+            val key = myRef?.push()?.key
+
+            // insert to database with auto increment
+            myRef?.child(key ?: "")?.setValue(user)
         }
     }
 }
