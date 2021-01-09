@@ -1,5 +1,7 @@
 package abika.sinau.myfirstfirebase
 
+import abika.sinau.myfirstfirebase.adapter.UserAdapter
+import abika.sinau.myfirstfirebase.model.User
 import abika.sinau.myfirstfirebase.tambah.TambahUserActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -28,10 +30,51 @@ class MainActivity : AppCompatActivity() {
         initView()
 
         // set real-time database
-        realTimeDatabase()
+//        realTimeDatabase()
+
+        // getData Users
+        getDataUsers()
     }
 
-    private fun realTimeDatabase() {
+    private fun getDataUsers() {
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("Users") // mengambil data dari DB Users
+
+        val dataUser = ArrayList<User>()
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+//                val value = snapshot.getValue(User::class.java)
+//                Log.d(TAG, "Value is: $value")
+
+                for(datas in snapshot.children){
+                    // get per masing2 field
+                    val nama = datas.child("name").value.toString()
+                    val pekerjaan = datas.child("pekerjaan").value.toString()
+                    val hp = datas.child("hp").value.toString()
+                    val alamat = datas.child("alamat").value.toString()
+
+                    val user = User(nama, pekerjaan, hp, alamat)
+
+                    dataUser.add(user)
+                    showDataUser(dataUser)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun showDataUser(dataUser: java.util.ArrayList<User>) {
+        val adapter = UserAdapter(dataUser)
+
+        rvListUser.adapter = adapter
+    }
+
+    private fun realTimeDatabaseMessage() {
         // insert data real-time database
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("message") // message akan masuk ke dalam realtimeDB di firebase
@@ -49,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 //                val value = dataSnapshot.getValue<String>()
+
                 val value = dataSnapshot.getValue(String::class.java)
                 Log.d(TAG, "Value is: $value")
 
