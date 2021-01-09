@@ -2,6 +2,8 @@ package abika.sinau.myfirstfirebase.adapter
 
 import abika.sinau.myfirstfirebase.R
 import abika.sinau.myfirstfirebase.model.User
+import abika.sinau.myfirstfirebase.update.UpdateUserActivity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +20,7 @@ class UserAdapter (val data: ArrayList<User>) : RecyclerView.Adapter<UserAdapter
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(data.get(position))
+        holder.bind(data[position])
     }
 
     override fun getItemCount(): Int = data.size ?: 0
@@ -27,6 +29,12 @@ class UserAdapter (val data: ArrayList<User>) : RecyclerView.Adapter<UserAdapter
         fun bind(get: User) {
             itemView.tvUserName.text = "Nama: ${get.name}"
             itemView.tvUserPekerjaan.text = "Pekerjaan: ${get.pekerjaan}"
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, UpdateUserActivity::class.java)
+                intent.putExtra("data", get)
+                itemView.context.startActivity(intent)
+            }
         }
     }
 }
