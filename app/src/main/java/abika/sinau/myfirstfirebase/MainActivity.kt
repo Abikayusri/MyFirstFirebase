@@ -4,22 +4,22 @@ import abika.sinau.myfirstfirebase.adapter.UserAdapter
 import abika.sinau.myfirstfirebase.model.User
 import abika.sinau.myfirstfirebase.tambah.TambahUserActivity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private var db: FirebaseDatabase? = null
     private val TAG = "MainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,17 +37,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getDataUsers() {
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("Users") // mengambil data dari DB Users
-
+        db = FirebaseDatabase.getInstance()
+        val myRef = db?.getReference("Users") // mengambil data dari DB Users
         val dataUser = ArrayList<User>()
 
-        myRef.addValueEventListener(object : ValueEventListener {
+        myRef?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 //                val value = snapshot.getValue(User::class.java)
 //                Log.d(TAG, "Value is: $value")
 
-                for(datas in snapshot.children){
+                for (datas in snapshot.children) {
                     // get per masing2 field
                     val nama = datas.child("name").value.toString()
                     val pekerjaan = datas.child("pekerjaan").value.toString()
@@ -77,7 +76,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDataUser(dataUser: java.util.ArrayList<User>) {
-        val adapter = UserAdapter(dataUser)
+        val adapter = UserAdapter(dataUser, object : UserAdapter.onItemDelete {
+            override fun user(user: User) {
+                val ref = db?.getReference("Users") // mengambil data dari DB Users
+                ref?.child(user.key ?: "")?.removeValue()
+
+                getDataUsers()
+            }
+        })
 
         rvListUser.adapter = adapter
     }
@@ -85,7 +91,8 @@ class MainActivity : AppCompatActivity() {
     private fun realTimeDatabaseMessage() {
         // insert data real-time database
         val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("message") // message akan masuk ke dalam realtimeDB di firebase
+        val myRef =
+            database.getReference("message") // message akan masuk ke dalam realtimeDB di firebase
 
         myRef.setValue("Hello, world!")
 
