@@ -14,13 +14,17 @@ import kotlinx.android.synthetic.main.item_user.view.*
  * Created by Abika Chairul Yusri on 08/01/2021
  * Bismillahirrahmanirrahim
  */
-class UserAdapter (val data: ArrayList<User>) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter (val data: ArrayList<User>, val itemClick: onItemDelete) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(data[position])
+        val data = data[position]
+        holder.bind(data)
+        holder.itemView.btnDelete.setOnClickListener {
+            itemClick.user(data)
+        }
     }
 
     override fun getItemCount(): Int = data.size ?: 0
@@ -36,5 +40,9 @@ class UserAdapter (val data: ArrayList<User>) : RecyclerView.Adapter<UserAdapter
                 itemView.context.startActivity(intent)
             }
         }
+    }
+
+    interface onItemDelete {
+        fun user(user: User)
     }
 }
